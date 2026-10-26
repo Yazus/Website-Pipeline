@@ -1,0 +1,31 @@
+# Per-project pipeline settings. Anything left out falls back to pipeline.config.mjs at the repo root.
+build:
+  images: # art master → widths to ship (WebP)
+    bowl: [400, 800, 1200]
+    mill: [600, 1200]
+    tin-uji: [450, 900]
+    tin-yame: [450, 900]
+    tin-kirishima: [450, 900]
+    tin-cafe: [450, 900]
+  copy_png: [og] # shipped as-is, for social cards
+  inline_css: true
+qa:
+  # Pages to test, relative to the site root.
+  pages: ['/']
+design:
+  # Every text/ground pair the page uses, with the WCAG minimum it must meet.
+  pairs:
+    - [ink, bg, 7]        # running text
+    - [ink, surface, 4.5] # menu bars, contact bands
+    - [ink-soft, bg, 4.5] # notes
+    - [ink-soft, surface, 4.5]
+    - [bg, ink, 4.5]      # button label, footer text
+    - [foam, ink, 4.5]    # tin labels, footer headings
+# A waiver downgrades one named failure to a note, with the reason printed in the review report.
+waivers:
+  - gate: taste
+    match: no-footage
+    reason: No footage of the cafe exists yet and the open archives were unreachable at build time
+  - gate: taste
+    match: off-centre
+    reason: The tins band runs edge to edge by design; text keeps one pair of margins

@@ -1,0 +1,44 @@
+# Stage 1 · Brief and discovery. The brief gate blocks every later stage until this is complete
+# and has no TODO left in it. Write facts, not adjectives.
+
+client:
+  name: {{name}}
+  kind: TODO what the business is, in a few words
+  location: TODO
+  contact: TODO
+  status: live # live | sample
+
+site:
+  url: TODO https://… (absolute; used for canonical, sitemap and social cards)
+  locale: en-GB
+  pages: [home]
+
+goal:
+  primary_action: TODO the one thing a visitor should do
+  success: TODO what a visitor knows within five seconds
+  first_question: TODO the visitor's first question, in their words
+
+audience:
+  - TODO who, where, and what they want
+
+mode: persuade # persuade | operate | read | experience
+
+inventory: # 8–12 things that belong to this client and no competitor
+  - TODO its name and what it means
+  - TODO its address, street, what that place looks like
+  - TODO the numbers in the brief
+  - TODO the constraint it lives with
+  - TODO its materials, rituals, printed things
+
+idea: TODO "On this page, <something only this client has> becomes <the device>."
+
+constraints:
+  - TODO
+
+assets:
+  photography: TODO none | list
+  logo: TODO
+  fonts: TODO
+
+sign_off:
+  brief: { by: TODO, on: TODO }

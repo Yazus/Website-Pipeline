@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Social card: the monument in miniature. -->
+  <rect width="1200" height="630" fill="#a4bd4c"/>
+  <text x="48" y="292" font-family="Unbounded" font-weight="800" font-size="236" letter-spacing="-9" fill="#15220e">F</text>
+  <circle cx="335" cy="208" r="92" fill="#1a1c15"/>
+  <circle cx="335" cy="208" r="76" fill="#0f110c"/>
+  <circle cx="335" cy="208" r="62" fill="#b9cf62"/>
+  <text x="440" y="292" font-family="Unbounded" font-weight="800" font-size="236" letter-spacing="-9" fill="#15220e">RTY</text>
+  <text x="48" y="500" font-family="Unbounded" font-weight="800" font-size="236" letter-spacing="-9" fill="#15220e">GRAMS</text>
+  <text x="52" y="580" font-family="Onest" font-weight="500" font-size="30" fill="#15220e">Stone-milled matcha, forty grams an hour · Leith, Edinburgh</text>
+</svg>

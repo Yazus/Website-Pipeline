@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <!-- The granite stone mill (ishiusu), side view, with powder collecting on the lower stone. 4:5 portrait. -->
+  <defs>
+    <filter id="granite" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="21" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.1  0 0 0 0 0.11  0 0 0 0 0.09  0 0 0 4 -2.2" result="dark"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.42" numOctaves="1" seed="5" result="m"/>
+      <feColorMatrix in="m" type="matrix" values="0 0 0 0 0.96  0 0 0 0 0.96  0 0 0 0 0.92  0 0 0 5 -3.05" result="light"/>
+      <feMerge result="speck"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge>
+      <feComposite in="speck" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="powder" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.75  0 0 0 0 0.24  0 0 0 2.4 -0.9" result="p"/>
+      <feComposite in="p" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="wood" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.18" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.22  0 0 0 0 0.12  0 0 0 1.5 -0.55" result="w"/>
+      <feComposite in="w" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="2" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.8 -0.3"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="26"/></filter>
+    <linearGradient id="roundL" x1="0" x2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0.38"/>
+      <stop offset="0.28" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.62" stop-color="#fff" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="#dfe8a6"/>
+  <!-- counter edge -->
+  <rect y="1180" width="1200" height="320" fill="#cdd98c"/>
+
+  <!-- shadow -->
+  <ellipse cx="640" cy="1250" rx="470" ry="70" fill="#15220e" opacity="0.35" filter="url(#soft)"/>
+
+  <!-- wooden tray -->
+  <path d="M150 1150 h900 l-40 90 h-820z" fill="#8a5a33"/>
+  <path d="M150 1150 h900 l-40 90 h-820z" fill="#fff" filter="url(#wood)"/>
+  <ellipse cx="600" cy="1150" rx="450" ry="58" fill="#a8744a"/>
+  <ellipse cx="600" cy="1150" rx="450" ry="58" fill="#fff" filter="url(#wood)" opacity="0.6"/>
+  <ellipse cx="600" cy="1146" rx="410" ry="46" fill="#7a4d2a"/>
+
+  <!-- lower stone: wider, with a ledge that catches the powder -->
+  <path d="M250 830 v270 a350 64 0 0 0 700 0 v-270z" fill="#8f918a"/>
+  <path d="M250 830 v270 a350 64 0 0 0 700 0 v-270z" fill="#fff" filter="url(#granite)"/>
+  <path d="M250 830 v270 a350 64 0 0 0 700 0 v-270z" fill="url(#roundL)"/>
+  <ellipse cx="600" cy="830" rx="350" ry="64" fill="#a3a59d"/>
+  <ellipse cx="600" cy="830" rx="350" ry="64" fill="#fff" filter="url(#granite)"/>
+  <!-- the spout where powder leaves the ledge -->
+  <path d="M930 860 l120 26 v34 l-120 -12z" fill="#8f918a"/>
+  <path d="M930 860 l120 26 v34 l-120 -12z" fill="#fff" filter="url(#granite)"/>
+
+  <!-- powder ring on the ledge and a small drift spilling at the spout -->
+  <ellipse cx="600" cy="826" rx="338" ry="58" fill="#86a92e"/>
+  <ellipse cx="600" cy="826" rx="338" ry="58" fill="#fff" filter="url(#powder)"/>
+  <path d="M1036 906 q8 110 2 226 h-14 q-4 -116 4 -226z" fill="#86a92e" opacity="0.55"/>
+  <path d="M1033 906 q4 110 0 226 h-5 q-2 -116 1 -226z" fill="#86a92e"/>
+  <path d="M970 1150 q60 -46 120 0z" fill="#86a92e"/>
+  <path d="M970 1150 q60 -46 120 0z" fill="#fff" filter="url(#powder)"/>
+
+  <!-- upper stone, turning -->
+  <path d="M320 470 v330 a280 52 0 0 0 560 0 v-330z" fill="#8a8c84"/>
+  <path d="M320 470 v330 a280 52 0 0 0 560 0 v-330z" fill="#fff" filter="url(#granite)"/>
+  <path d="M320 470 v330 a280 52 0 0 0 560 0 v-330z" fill="url(#roundL)"/>
+  <!-- the grinding line between the stones, dusted green -->
+  <path d="M320 798 a280 52 0 0 0 560 0" fill="none" stroke="#86a92e" stroke-width="10"/>
+  <ellipse cx="600" cy="470" rx="280" ry="52" fill="#a1a39b"/>
+  <ellipse cx="600" cy="470" rx="280" ry="52" fill="#fff" filter="url(#granite)"/>
+  <!-- feed hole, heaped with shaded tencha leaf -->
+  <ellipse cx="560" cy="466" rx="58" ry="14" fill="#2b2d26"/>
+  <g fill="#3f5c14">
+    <path d="M520 462 l14 -10 l10 12z"/><path d="M548 458 l18 -8 l4 14z"/><path d="M570 462 l16 -6 l2 12z"/>
+    <path d="M534 470 l12 -6 l10 8z"/><path d="M584 470 l14 -4 l-2 8z"/>
+  </g>
+
+  <!-- the wooden handle, set into the side of the upper stone -->
+  <rect x="760" y="560" width="300" height="46" rx="10" fill="#8a5a33" transform="rotate(-6 760 583)"/>
+  <rect x="760" y="560" width="300" height="46" rx="10" fill="#fff" filter="url(#wood)" transform="rotate(-6 760 583)"/>
+  <rect x="1010" y="455" width="54" height="150" rx="14" fill="#a8744a"/>
+  <rect x="1010" y="455" width="54" height="150" rx="14" fill="#fff" filter="url(#wood)" opacity="0.6"/>
+
+  <rect width="1200" height="1500" fill="#000" filter="url(#grain)" opacity="0.18"/>
+</svg>

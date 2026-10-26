@@ -1,0 +1,968 @@
+/* Forty Grams · tokens first; everything below references them. See DESIGN.md. */
+
+@font-face {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fonts/unbounded-800.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Onest;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/onest.woff2") format("woff2");
+}
+
+:root {
+  --bg: #a4bd4c;
+  --surface: #97b142;
+  --ink: #15220e;
+  --ink-soft: #2c4118;
+  --foam: #dfe8a6;
+
+  --display: "Unbounded", "Arial Black", sans-serif;
+  --text: "Onest", "Helvetica Neue", arial, sans-serif;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.375rem, 1rem + 1.25vw, 2.125rem);
+  --step-head: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  --step-display: clamp(2.5rem, 1.2rem + 4.6vw, 5.25rem);
+
+  /* Each monument line is fitted to the frame: the ratio is the word's width in em, measured once. */
+  --frame: 100cqi; /* hero and footer carry the margins as padding */
+  --m: clamp(1rem, 0.6rem + 1.2vw, 1.75rem);
+  --gap: clamp(7.5rem, 4rem + 9vw, 15rem);
+
+  /* Word widths in em for Unbounded 800 at -0.04em, measured once with the art stage's browser. */
+  --w-forty: 4.27;
+  --w-grams: 4.88;
+  --w-forty-grams: 9.07;
+  --w-forty-word: 4.25;
+  --o-size: 0.83em;
+  --o-drop: -0.045em;
+  --menu-size: 26.2cqi;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  color-scheme: light;
+  accent-color: var(--ink);
+  scrollbar-color: var(--ink) var(--bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--ink);
+  font: 400 var(--step-body) / 1.5 var(--text);
+  font-kerning: normal;
+  caret-color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 0.07em;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  top: var(--m);
+  left: var(--m);
+  z-index: 10;
+  padding: 0.75rem 1rem;
+  background: var(--ink);
+  color: var(--bg);
+  translate: 0 -200%;
+}
+
+.skip:focus-visible {
+  translate: 0 0;
+  outline-color: var(--ink);
+}
+
+.heading {
+  font: 800 var(--step-head) / 1 var(--display);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    transform 140ms var(--ease-out),
+    background-color 200ms ease;
+}
+
+.button:hover {
+  background: var(--ink-soft);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Hero: the name as a monument ---------- */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template:
+    "intro . nav" auto
+    "mark mark mark" 1fr
+    "place . mill" auto / 1fr auto 1fr;
+  min-height: 100svh;
+  padding: var(--m);
+  background: var(--bg);
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.hero__intro {
+  grid-area: intro;
+  max-width: 36ch;
+}
+
+.hero__lede {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.hero__nav {
+  grid-area: nav;
+  justify-self: end;
+}
+
+.hero__nav ul {
+  display: flex;
+  gap: 0.25rem 1rem;
+  margin-top: -0.6rem;
+}
+
+.hero__nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  font-weight: 500;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 200ms ease;
+}
+
+.hero__nav a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.monument {
+  grid-area: mark;
+  align-self: center;
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  transform-origin: 50% 100%;
+}
+
+.monument__word {
+  display: block;
+  white-space: nowrap;
+}
+
+.monument__word--forty {
+  font-size: calc(var(--frame) / var(--w-forty));
+}
+
+.monument__word--grams {
+  font-size: calc(var(--frame) / var(--w-grams));
+  margin-top: 0.06em;
+}
+
+/* The O of FORTY is a bowl of usucha seen from above. */
+.monument__o {
+  display: inline-block;
+  width: var(--o-size);
+  height: var(--o-size);
+  margin: 0 0.025em 0 0.03em;
+  vertical-align: var(--o-drop);
+}
+
+.monument__o img {
+  width: 100%;
+  height: 100%;
+}
+
+.hero__place,
+.hero__mill {
+  align-self: end;
+}
+
+.hero__place {
+  grid-area: place;
+}
+
+.hero__mill {
+  grid-area: mill;
+  justify-self: end;
+  max-width: 34ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__mill strong {
+  font-weight: 500;
+}
+
+.hero__picture {
+  display: none;
+}
+
+/* ---------- Page body ---------- */
+
+main {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  padding: var(--gap) var(--m) 0;
+}
+
+.intro__text {
+  grid-column: 7 / -1;
+}
+
+.intro__text .heading {
+  margin-bottom: 2rem;
+}
+
+.statement {
+  max-width: 34ch;
+  font-size: var(--step-lead);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-indent: 3em;
+  text-wrap: pretty;
+}
+
+.intro__figure {
+  grid-column: 1 / 5;
+  margin-top: calc(var(--step-lead) * -2.5);
+}
+
+.intro__frame {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.intro__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 62%;
+}
+
+.note {
+  max-width: 24ch;
+  margin-top: 1.5rem;
+  color: var(--ink-soft);
+  font-size: var(--step-small);
+  line-height: 1.45;
+}
+
+/* Menu: one giant word, then filled bars that open in place. */
+
+.menu {
+  padding: var(--gap) var(--m) 0;
+}
+
+.menu__column {
+  container-type: inline-size;
+  width: min(100%, 42.5rem);
+  margin-inline: auto;
+}
+
+.menu__word {
+  font: 800 var(--menu-size, 25cqi) / 0.8 var(--display);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.menu__bars {
+  display: grid;
+  gap: 6px;
+  margin-top: 1.25rem;
+}
+
+.bar {
+  background: var(--surface);
+  interpolate-size: allow-keywords;
+}
+
+.bar summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 3.5rem;
+  padding: 0 3.5rem 0 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 200ms ease;
+}
+
+.bar summary::-webkit-details-marker {
+  display: none;
+}
+
+.bar summary:hover {
+  background: var(--bg);
+}
+
+/* Plus that turns into a minus. */
+.bar summary::before,
+.bar summary::after {
+  position: absolute;
+  top: 50%;
+  right: 1.25rem;
+  width: 14px;
+  height: 2px;
+  background: currentcolor;
+  content: "";
+  transition: rotate 260ms var(--ease-out);
+}
+
+.bar summary::after {
+  rotate: 90deg;
+}
+
+.bar[open] summary::after {
+  rotate: 0deg;
+}
+
+.bar::details-content {
+  height: 0;
+  overflow: clip;
+  transition:
+    height 320ms var(--ease-in-out),
+    content-visibility 320ms allow-discrete;
+}
+
+.bar[open]::details-content {
+  height: auto;
+}
+
+.bar:not([open]) .items {
+  visibility: hidden;
+}
+
+.items {
+  display: grid;
+  gap: 0.875rem;
+  padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.items small {
+  display: block;
+  color: var(--ink-soft);
+  font-size: var(--step-small);
+}
+
+.price {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Tins: one band of unequal panels. */
+
+.tins {
+  padding-top: var(--gap);
+}
+
+.tins__title {
+  margin: 0 var(--m) 4rem calc(var(--m) + (100% - 2 * var(--m)) / 6);
+}
+
+.band {
+  display: flex;
+  height: 68svh;
+  min-height: 26rem;
+}
+
+.panel {
+  position: relative;
+  flex: var(--grow, 2) 1 0;
+  min-width: 0;
+  transition: flex-grow 500ms var(--ease-in-out);
+}
+
+.panel:nth-child(1) { --grow: 5; }
+.panel:nth-child(3) { --grow: 3; }
+
+.panel:hover,
+.panel:focus-within {
+  --grow: 6;
+}
+
+.panel a {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.panel a:focus-visible {
+  outline-offset: -6px;
+  outline-color: var(--foam);
+}
+
+.panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 700ms var(--ease-out);
+}
+
+.panel:hover img {
+  scale: 1.03;
+}
+
+.panel__title {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  max-width: 13ch;
+  color: var(--foam);
+  font-size: var(--step-lead);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.panel__label {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.5rem 0.75rem;
+  background: var(--ink);
+  color: var(--foam);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.tins__caption {
+  max-width: 60ch;
+  margin: 1.25rem var(--m) 0;
+}
+
+/* How to whisk: four lines that step across the grid. */
+
+.stairs {
+  padding: var(--gap) var(--m) 0;
+}
+
+.stairs__list {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 3.5rem clamp(1rem, 2vw, 2rem);
+}
+
+.stair {
+  grid-column: var(--from) / -1;
+}
+
+.stair:nth-child(1) { --from: 1; }
+.stair:nth-child(2) { --from: 3; }
+.stair:nth-child(3) { --from: 5; }
+.stair:nth-child(4) { --from: 7; }
+
+.stair__line {
+  font: 500 var(--step-display) / 1 var(--text);
+  letter-spacing: -0.035em;
+}
+
+.stair p:not(.stair__line) {
+  max-width: 34ch;
+  margin-top: 0.75rem;
+}
+
+/* Visit: the address set as display rows. */
+
+.visit {
+  padding-top: var(--gap);
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: clamp(5.25rem, 3rem + 7vw, 9.5rem);
+  margin: 0;
+  padding: 0 var(--m) 1.25rem calc(var(--m) + 0.25rem);
+  font: 400 var(--step-display) / 1 var(--text);
+  letter-spacing: -0.035em;
+  text-decoration: none;
+}
+
+.row:nth-child(even) {
+  background: var(--surface);
+}
+
+a.row {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+a.row:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.row--hours {
+  justify-content: flex-start;
+  gap: 0.3em;
+}
+
+.row__bowl {
+  width: 1.15em;
+  height: 1.15em;
+  margin-bottom: -0.1em;
+}
+
+.row--hello {
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.round {
+  display: inline-grid;
+  place-items: center;
+  width: 0.9em;
+  height: 0.9em;
+  min-width: 3.5rem;
+  min-height: 3.5rem;
+  margin-left: 0.4em;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--bg);
+  transition: transform 160ms var(--ease-out);
+}
+
+.round svg {
+  width: 40%;
+  height: 40%;
+  transition: translate 220ms var(--ease-out);
+}
+
+.round:hover svg {
+  translate: 12% 0;
+}
+
+.round:active {
+  transform: scale(0.95);
+}
+
+/* Footer: inverse field, the name returns at full width. */
+
+.footer {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  min-height: 75svh;
+  padding: 2.5rem var(--m) 1.25rem;
+  background: var(--ink);
+  color: var(--bg);
+  container-type: inline-size;
+}
+
+.footer ::selection {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.footer :focus-visible {
+  outline-color: var(--bg);
+}
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem clamp(1rem, 2vw, 2rem);
+}
+
+.footer__head {
+  margin-bottom: 0.5rem;
+  color: var(--foam);
+  font: 500 var(--step-body) / 1.4 var(--text);
+}
+
+.footer__cols > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.footer__head + ul {
+  margin-top: -0.6rem;
+}
+
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 200ms ease;
+}
+
+.footer a:hover {
+  text-decoration-color: currentcolor;
+}
+
+.footer__mark {
+  grid-row: 3;
+  font: 800 calc(var(--frame) / var(--w-forty-grams)) / 0.8 var(--display);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+}
+
+.footer__legal {
+  grid-row: 4;
+  margin-top: 1.25rem;
+  font-size: var(--step-small);
+}
+
+/* ---------- Tablet and phone ---------- */
+
+@media (width < 60rem) {
+  .footer__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .intro__figure {
+    grid-column: 1 / 6;
+  }
+
+  .intro__text {
+    grid-column: 6 / -1;
+  }
+}
+
+@media (width < 47.5rem) {
+  .hero {
+    grid-template:
+      "nav" auto
+      "mark" auto
+      "intro" auto
+      "mill" auto
+      "picture" 1fr / 1fr;
+    gap: 1.5rem;
+    padding-bottom: 0;
+  }
+
+  .hero__nav {
+    justify-self: start;
+  }
+
+  .monument {
+    margin-top: 6svh;
+  }
+
+  .hero__intro {
+    max-width: none;
+  }
+
+  .hero__intro .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero__place {
+    display: none;
+  }
+
+  .hero__mill {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .hero__picture {
+    display: block;
+    grid-area: picture;
+    width: 78%;
+    justify-self: end;
+    min-height: 12rem;
+    overflow: hidden;
+  }
+
+  .hero__picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  .intro {
+    grid-template-columns: 30% 1fr;
+    gap: 2.5rem 8%;
+  }
+
+  .intro__text {
+    grid-column: 1 / -1;
+  }
+
+  .statement {
+    text-indent: 0;
+  }
+
+  .intro__figure {
+    display: contents;
+  }
+
+  .intro__frame {
+    grid-column: 2;
+    grid-row: 2;
+    aspect-ratio: 4 / 5;
+  }
+
+  .note {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    margin: 0;
+  }
+
+  .tins__title {
+    margin: 0 var(--m) 2rem;
+  }
+
+  .band {
+    flex-wrap: wrap;
+    height: 84svh;
+    min-height: 34rem;
+  }
+
+  .panel {
+    flex: 0 0 auto;
+    height: 50%;
+  }
+
+  .panel:nth-child(1),
+  .panel:nth-child(4) { width: 64%; }
+
+  .panel:nth-child(2),
+  .panel:nth-child(3) { width: 36%; }
+
+  .panel__title {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .panel__label {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    max-width: calc(100% - 1rem);
+    font-size: var(--step-small);
+  }
+
+  .stairs__list {
+    display: block;
+  }
+
+  .stair {
+    margin-left: calc(var(--n) * 6vw);
+  }
+
+  .stair + .stair {
+    margin-top: 2.5rem;
+  }
+
+  .stair:nth-child(1) { --n: 0; }
+  .stair:nth-child(2) { --n: 1; }
+  .stair:nth-child(3) { --n: 2; }
+  .stair:nth-child(4) { --n: 3; }
+
+  .stair__line {
+    font-size: 8.4vw;
+  }
+
+  .row {
+    min-height: 5.25rem;
+    font-size: 9.6vw;
+    padding-bottom: 0.875rem;
+  }
+
+  .row--hours {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 0.1em;
+    padding-top: 1rem;
+  }
+
+  .row.row--hello {
+    justify-content: space-between;
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  .row--hello .round {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .footer__mark span {
+    display: block;
+  }
+
+  .footer__mark span:first-child {
+    font-size: calc(var(--frame) / var(--w-forty-word));
+  }
+
+  .footer__mark span:last-child {
+    font-size: calc(var(--frame) / var(--w-grams));
+  }
+}
+
+/* ---------- Motion. Everything is visible without it. ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrances are keyframes, not transitions, so they never fight an element's own hover transitions. */
+  .reveal-ready [data-reveal]:not(.is-in) {
+    opacity: 0;
+  }
+
+  .reveal-ready [data-reveal].is-in {
+    animation: enter 700ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .monument {
+      animation: sink linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .footer__mark {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    .intro__frame img,
+    .hero__picture img {
+      scale: 1.12;
+      animation: drift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+}
+
+@keyframes sink {
+  to { scale: 0.94; }
+}
+
+@keyframes rise {
+  from { scale: 0.94; }
+}
+
+@keyframes drift {
+  from { translate: 0 -5%; }
+  to { translate: 0 5%; }
+}

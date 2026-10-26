@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <!-- A bowl of usucha seen from above: black raku glaze, whisked foam. -->
+  <defs>
+    <filter id="foam" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="3" seed="11" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.80  0 0 0 0 0.87  0 0 0 0 0.45  0 0 0 1.4 -0.45" result="f"/>
+      <feComposite in="f" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="micro" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.90  0 0 0 0 0.95  0 0 0 0 0.62  0 0 0 1.5 -0.62" result="f"/>
+      <feComposite in="f" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="glaze" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="4" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.2  0 0 0 0 0.21  0 0 0 0 0.17  0 0 0 0.9 -0.3" result="g"/>
+      <feComposite in="g" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="2" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 -0.35" result="g"/>
+      <feComposite in="g" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="22"/></filter>
+    <clipPath id="tea"><circle cx="600" cy="600" r="418"/></clipPath>
+    <clipPath id="rim"><circle cx="600" cy="600" r="566"/></clipPath>
+  </defs>
+
+  <!-- cast shadow on the counter -->
+  <ellipse cx="628" cy="636" rx="566" ry="566" fill="#15220e" opacity="0.35" filter="url(#soft)"/>
+
+  <!-- body and rim of the bowl -->
+  <circle cx="600" cy="600" r="566" fill="#1a1c15"/>
+  <circle cx="600" cy="600" r="566" fill="#fff" filter="url(#glaze)" opacity="0.55"/>
+  <!-- the rim is never quite round on hand-built raku -->
+  <path d="M600 40c170 2 300 70 390 170 86 96 140 214 136 360-6 172-74 300-176 392-98 88-216 160-356 158-154-4-282-64-374-160C130 862 38 742 36 590c4-160 70-290 172-380C304 120 434 38 600 40z" fill="none" stroke="#3b3f31" stroke-width="10" opacity="0.8"/>
+  <path d="M250 250C330 160 450 104 600 100" fill="none" stroke="#e8edd0" stroke-width="14" stroke-linecap="round" opacity="0.5"/>
+  <path d="M190 340c14-26 30-50 48-72" fill="none" stroke="#e8edd0" stroke-width="10" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- inner wall, falling away to the tea -->
+  <circle cx="600" cy="600" r="488" fill="#0f110c"/>
+  <circle cx="600" cy="600" r="488" fill="#fff" filter="url(#glaze)" opacity="0.3"/>
+  <path d="M960 470c26 70 34 150 14 236" fill="none" stroke="#c9cfb0" stroke-width="9" stroke-linecap="round" opacity="0.22"/>
+
+  <!-- the tea: deep green, then the whisked foam over it -->
+  <g clip-path="url(#tea)">
+    <rect x="150" y="150" width="900" height="900" fill="#86a92e"/>
+    <rect x="150" y="150" width="900" height="900" fill="#000" filter="url(#foam)" opacity="1"/>
+    <rect x="150" y="150" width="900" height="900" fill="#000" filter="url(#micro)" opacity="0.85"/>
+    <!-- a few large bubbles the whisk left behind -->
+    <g fill="none" stroke="#eef3c8" stroke-width="2.5" opacity="0.45">
+      <circle cx="420" cy="520" r="9"/><circle cx="452" cy="548" r="5"/><circle cx="700" cy="410" r="7"/>
+      <circle cx="760" cy="690" r="11"/><circle cx="560" cy="770" r="6"/><circle cx="510" cy="380" r="4"/>
+      <circle cx="830" cy="560" r="5"/><circle cx="372" cy="690" r="7"/><circle cx="640" cy="620" r="4"/>
+    </g>
+    <!-- the darker meniscus where the tea meets the wall -->
+    <circle cx="600" cy="600" r="418" fill="none" stroke="#4d6b16" stroke-width="10" opacity="0.6"/>
+  </g>
+
+  <rect width="1200" height="1200" fill="#000" filter="url(#grain)" opacity="0.25" clip-path="url(#rim)"/>
+</svg>

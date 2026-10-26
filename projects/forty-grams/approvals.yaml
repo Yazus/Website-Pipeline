@@ -1,0 +1,25 @@
+# Sign-offs. Each stage is approved by a named person on a date. Preview deploys need QA to pass;
+# a production launch also needs every sign-off below, and `site deploy --production` refuses without them.
+# Leave `by` empty until the person has actually approved. Never fill it in for someone else.
+
+brief:
+  by: Claude (studio)
+  on: 2026-10-26
+  note: Sample brief written for the pipeline's example project
+
+design_direction:
+  by: Claude (studio)
+  on: 2026-10-26
+  note: Taste direction "name as a monument" (seed 1834591317), palette taken from the tea
+
+content:
+  by: # client confirms menu, prices, address and hours
+  on:
+
+qa_review:
+  by: # studio lead reviews reports/forty-grams/report.html
+  on:
+
+client_launch:
+  by: # client approves the final build for production
+  on:

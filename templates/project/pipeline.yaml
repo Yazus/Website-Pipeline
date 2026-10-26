@@ -1,0 +1,11 @@
+# Per-project pipeline settings. Anything left out uses pipeline.config.mjs.
+build:
+  images: {} # art master name → widths, e.g. hero: [600, 1200, 1800]
+  copy_png: []
+  inline_css: true
+qa:
+  pages: ['/']
+design:
+  pairs: # [foreground token, background token, minimum contrast]
+    - [ink, bg, 7]
+waivers: [] # { gate, match, reason } — every waiver is printed in the review report

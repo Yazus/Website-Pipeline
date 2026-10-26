@@ -1,0 +1,6 @@
+# Who approved each stage, and when. Leave `by` empty until the person has actually approved.
+brief: { by: , on: }
+design_direction: { by: , on: }
+content: { by: , on: }
+qa_review: { by: , on: }
+client_launch: { by: , on: }

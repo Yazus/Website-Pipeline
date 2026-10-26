@@ -1,0 +1,89 @@
+# Runs every project through the whole pipeline on every pull request and every push to main.
+# Nothing is published while any gate is red. On main, passing projects go to GitHub Pages as
+# previews (Settings → Pages → Source: GitHub Actions).
+name: Pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # All three engines: Chromium, Firefox, and WebKit for Safari.
+      - run: npx playwright install --with-deps chromium firefox webkit
+
+      # Optional: the Taste skill's own inspector as an extra gate. Turn on with the repository
+      # variable TASTE_SKILL=true. Pinned to a reviewed commit.
+      - name: Fetch the Taste skill
+        if: vars.TASTE_SKILL == 'true'
+        run: |
+          git clone --quiet https://github.com/Leonxlnx/taste-skill .skills/taste
+          git -C .skills/taste checkout --quiet 12af471f627f866411b4bd785b19646d3672784c
+          echo "TASTE_SKILL_DIR=$PWD/.skills/taste/skills/taste-skill" >> "$GITHUB_ENV"
+
+      - run: npm test
+
+      - name: Run every project through the pipeline
+        run: |
+          status=0
+          for dir in projects/*/; do
+            slug=$(basename "$dir")
+            echo "::group::$slug"
+            if npm run pipeline -- "$slug"; then
+              npm run deploy -- "$slug"
+            else
+              echo "::error title=$slug::QA failed. See the review report in the run's artifacts."
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: Keep the review reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-reports
+          path: reports/
+          if-no-files-found: ignore
+
+      - name: Package previews for Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+  pages:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: qa
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

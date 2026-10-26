@@ -1,0 +1,50 @@
+# Stage 1 · Brief and discovery
+# Signed off before any design starts. The brief gate (stages/brief.mjs) refuses to continue
+# while a required field is empty or a TODO remains.
+
+client:
+  name: Forty Grams
+  kind: Matcha cafe and tea shop
+  location: 18 Calder Lane, Leith, Edinburgh EH6 6QR   # sample address
+  contact: hello@fortygrams.example
+  status: sample # sample | live. A sample project may carry illustrative content; it is listed in the report.
+
+site:
+  url: https://yazus.github.io/website-pipeline/forty-grams/
+  locale: en-GB
+  pages: [home]
+
+goal:
+  primary_action: Visit the cafe, or order a tin of matcha
+  success: A visitor knows within five seconds what Forty Grams is, where it is, and what it costs
+  first_question: "What is this, and can I get a matcha there today?"
+
+audience:
+  - Locals and office workers in Leith who want a proper bowl of matcha, not a syrup latte
+  - Matcha drinkers anywhere in the UK who want fresh, dated tins posted to them
+
+mode: persuade # persuade | operate | read | experience (Impeccable modes)
+
+inventory: # things that belong to this client and no competitor (Taste skill step 1)
+  - The name is the mill's output: a granite stone mill grinds forty grams of matcha an hour
+  - The mill runs 6:30 to 16:30, so a full day is 400 g, about 200 bowls
+  - The stones are dressed by hand every Monday, so the shop is closed Mondays
+  - Every tin is stamped with the day it was milled and sold within 30 days of it
+  - Three origins on the shelf, Uji, Yame and Kirishima, one cultivar each
+  - Usucha is 2 g of matcha to 70 ml of water at about 80°C
+  - The cafe is on Calder Lane in Leith, by the Water of Leith
+
+idea: "The mill's hourly output becomes the monument name, the O of FORTY is a bowl seen from above, and a live counter says how much the mill has ground today."
+
+constraints:
+  - No checkout yet. Tin orders open a pre-filled email; wire a shop before launch
+  - No photography yet. Illustrations drawn for the site stand in until the shoot
+  - Body text at least 16px, WCAG 2.2 AA throughout
+
+assets:
+  photography: none
+  logo: none (wordmark set in the display face)
+  fonts: Unbounded 800, Onest 400–500 (SIL OFL, self-hosted)
+
+sign_off:
+  brief: { by: Claude (studio), on: 2026-10-26 } # sample brief; a real project names the client here
